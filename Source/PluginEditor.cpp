@@ -1,0 +1,99 @@
+/*
+  ==============================================================================
+
+    This file contains the basic framework code for a JUCE plugin editor.
+
+  ==============================================================================
+*/
+
+#include "PluginProcessor.h"
+#include "PluginEditor.h"
+
+extern float r_value;
+extern float q_value;
+
+//==============================================================================
+Pitch_Tracker_PluginAudioProcessorEditor::Pitch_Tracker_PluginAudioProcessorEditor (Pitch_Tracker_PluginAudioProcessor& p)
+    : AudioProcessorEditor (&p), audioProcessor (p)
+{
+    // Make sure that before the constructor has finished, you've set the
+    // editor's size to whatever you need it to be.
+    setSize (Window_X, Window_Y);
+    
+    addAndMakeVisible(freq_rect);
+    
+    addAndMakeVisible(frequency_variance_slider);
+    frequency_variance_slider.setRange(0.00000001, 10.0);
+    frequency_variance_slider.setSkewFactor(0.1);
+    frequency_variance_slider.addListener(this);
+    addAndMakeVisible(frequency_variance_label);
+    frequency_variance_label.setText("freq. variance", juce::dontSendNotification);
+    frequency_variance_label.attachToComponent(&frequency_variance_slider, true);
+    frequency_variance_slider.setValue(0.0000001);
+    
+    addAndMakeVisible(noise_variance_slider);
+    noise_variance_slider.setRange(0.00000001, 10.0);
+    noise_variance_slider.addListener(this);
+    noise_variance_slider.setSkewFactor(0.1);
+    addAndMakeVisible(noise_variance_label);
+    noise_variance_label.setText("noise variance", juce::dontSendNotification);
+    noise_variance_label.attachToComponent(&noise_variance_slider, true);
+    noise_variance_slider.setValue(0.003);
+    
+    addAndMakeVisible(q_factor_slider);
+    q_factor_slider.setRange(0.01, 1.0);
+    q_factor_slider.addListener(this);
+    addAndMakeVisible(q_factor_label);
+    q_factor_label.setText("Q factor", juce::dontSendNotification);
+    q_factor_label.attachToComponent(&q_factor_slider, true);
+    q_factor_slider.setValue(0.1);
+    
+    startTimerHz(5);
+}
+
+Pitch_Tracker_PluginAudioProcessorEditor::~Pitch_Tracker_PluginAudioProcessorEditor()
+{
+}
+
+//==============================================================================
+void Pitch_Tracker_PluginAudioProcessorEditor::paint (juce::Graphics& g)
+{
+    // (Our component is opaque, so we must completely fill the background with a solid colour)
+    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+}
+
+void Pitch_Tracker_PluginAudioProcessorEditor::timerCallback()
+{
+    // (Our component is opaque, so we must completely fill the background with a solid colour)
+    freq_rect.setVal(audioProcessor.frequency_val);
+    freq_rect.repaint();
+}
+
+void Pitch_Tracker_PluginAudioProcessorEditor::sliderValueChanged(juce::Slider * slider)
+{
+    if (slider == &frequency_variance_slider)
+    {
+        q_value = frequency_variance_slider.getValue();
+    }
+    else if (slider == &noise_variance_slider)
+    {
+        r_value = noise_variance_slider.getValue();
+    }
+    else if (slider == &q_factor_slider)
+    {
+        audioProcessor.getFilter()->setRho(q_factor_slider.getValue());
+    }
+}
+
+void Pitch_Tracker_PluginAudioProcessorEditor::resized()
+{
+    auto sliderLeftHand = this->getLocalBounds().getWidth()/3.0;
+    auto sliderTop = this->getLocalBounds().getHeight()/10.0;
+    auto sliderHeight = 20.0;
+    auto sliderWidth = this->getLocalBounds().getWidth()/2.0;
+    frequency_variance_slider.setBounds(sliderLeftHand, sliderTop, sliderWidth, sliderHeight);
+    noise_variance_slider.setBounds(sliderLeftHand, sliderTop + 2*sliderHeight, sliderWidth, sliderHeight);
+    q_factor_slider.setBounds(sliderLeftHand, sliderTop + 4*sliderHeight, sliderWidth, sliderHeight);
+    
+    freq_rect.setBounds(this->getLocalBounds().getX(), this->getLocalBounds().getY(), Window_X, Window_Y);
+}

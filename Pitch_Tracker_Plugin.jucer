@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="fNlnwU" name="Pitch_Tracker_Plugin" projectType="audioplug"
+              useAppConfig="0" addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1"
+              cppLanguageStandard="20" companyName="JZ">
+  <MAINGROUP id="n3CSLv" name="Pitch_Tracker_Plugin">
+    <GROUP id="{828B8C69-AACC-A5D5-7C9D-4695DA9C9FF4}" name="Source">
+      <GROUP id="{2D2542A6-6CCE-9C6C-E049-6AE4CE964015}" name="Components">
+        <FILE id="aNsccy" name="Frequency_Display.h" compile="0" resource="0"
+              file="Source/Frequency_Display.h"/>
+      </GROUP>
+      <FILE id="pckstQ" name="Kalman.h" compile="0" resource="0" file="Source/Kalman.h"/>
+      <GROUP id="{5A095B93-3E75-623F-9146-CD9146E2CE74}" name="Filter">
+        <FILE id="tft5Zv" name="Biquad.cpp" compile="1" resource="0" file="Source/Biquad.cpp"/>
+        <FILE id="RcU4kd" name="Biquad.h" compile="0" resource="0" file="Source/Biquad.h"/>
+      </GROUP>
+      <FILE id="fKzHLA" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="t4U9XR" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="Zzz7Rj" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="Xv9Nki" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" microphonePermissionNeeded="1">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Pitch_Tracker_Plugin"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Pitch_Tracker_Plugin"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../Desktop/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+</JUCERPROJECT>
