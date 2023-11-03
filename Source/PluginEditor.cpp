@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "enums.h"
 
 extern float r_value;
 extern float q_value;
@@ -48,6 +49,16 @@ Pitch_Tracker_PluginAudioProcessorEditor::Pitch_Tracker_PluginAudioProcessorEdit
     q_factor_label.attachToComponent(&q_factor_slider, true);
     q_factor_slider.setValue(0.1);
     
+    addAndMakeVisible(choose_key);
+    choose_key.setTitle("Key");
+    choose_key.addItemList({"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"}, 1);
+    choose_key.onChange = [this] { keyBoxChanged(); };
+    
+    addAndMakeVisible(choose_scale);
+    choose_scale.setTitle("Scale");
+    choose_scale.addItemList({"Major","Minor"}, 1);
+    choose_scale.onChange = [this] { scaleBoxChanged(); };
+    
     startTimerHz(5);
 }
 
@@ -85,6 +96,16 @@ void Pitch_Tracker_PluginAudioProcessorEditor::sliderValueChanged(juce::Slider *
     }
 }
 
+void Pitch_Tracker_PluginAudioProcessorEditor::keyBoxChanged()
+{
+    audioProcessor.current_key = (enums::Key)choose_key.getSelectedId();
+}
+
+void Pitch_Tracker_PluginAudioProcessorEditor::scaleBoxChanged()
+{
+    audioProcessor.current_scale = (enums::Scale)choose_scale.getSelectedId();
+}
+
 void Pitch_Tracker_PluginAudioProcessorEditor::resized()
 {
     auto sliderLeftHand = this->getLocalBounds().getWidth()/3.0;
@@ -94,6 +115,8 @@ void Pitch_Tracker_PluginAudioProcessorEditor::resized()
     frequency_variance_slider.setBounds(sliderLeftHand, sliderTop, sliderWidth, sliderHeight);
     noise_variance_slider.setBounds(sliderLeftHand, sliderTop + 2*sliderHeight, sliderWidth, sliderHeight);
     q_factor_slider.setBounds(sliderLeftHand, sliderTop + 4*sliderHeight, sliderWidth, sliderHeight);
-    
     freq_rect.setBounds(this->getLocalBounds().getX(), this->getLocalBounds().getY(), Window_X, Window_Y);
+    
+    choose_key.setBounds(this->getLocalBounds().getWidth()/4, 300, 100, 65);
+    choose_scale.setBounds(2*(this->getLocalBounds().getWidth()/4) + 30, 300, 100, 65);
 }

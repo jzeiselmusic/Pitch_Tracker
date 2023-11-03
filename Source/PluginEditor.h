@@ -26,6 +26,8 @@ public:
     void resized() override;
     void timerCallback() override;
     void sliderValueChanged(juce::Slider*) override;
+    void keyBoxChanged(void);
+    void scaleBoxChanged(void);
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -42,6 +44,9 @@ private:
     
     juce::Slider q_factor_slider;
     juce::Label q_factor_label;
+    
+    juce::ComboBox choose_key;
+    juce::ComboBox choose_scale;
     
     int Window_X = 500;
     int Window_Y = 400;

@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "Biquad.h"
+#include "enums.h"
 
 //==============================================================================
 /**
@@ -57,10 +58,14 @@ public:
     float frequency_val = 0.0;
     
     Biquad* getFilter(void) { return &(this->biquad_filter);};
+    
+    enums::Key current_key = enums::C;
+    enums::Scale current_scale = enums::Major;
 
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Pitch_Tracker_PluginAudioProcessor)
     
     Biquad biquad_filter = Biquad();
+
 };
