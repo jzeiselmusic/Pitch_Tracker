@@ -7,6 +7,7 @@
     <GROUP id="{828B8C69-AACC-A5D5-7C9D-4695DA9C9FF4}" name="Source">
       <GROUP id="{202F74B0-A22E-130E-9B5C-B784C6E70167}" name="Utilities">
         <FILE id="xfXmbA" name="enums.h" compile="0" resource="0" file="Source/enums.h"/>
+        <FILE id="EVxt7Y" name="utility_funcs.h" compile="0" resource="0" file="Source/utility_funcs.h"/>
       </GROUP>
       <GROUP id="{2D2542A6-6CCE-9C6C-E049-6AE4CE964015}" name="Components">
         <FILE id="aNsccy" name="Frequency_Display.h" compile="0" resource="0"
