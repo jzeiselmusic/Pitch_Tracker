@@ -32,4 +32,12 @@ typedef enum Scale {
     Minor = 2
 } Scale;
 
+typedef enum Octave {
+    lower_lower = 1,
+    lower = 2,
+    middle = 3,
+    upper = 4,
+    upper_upper = 5
+} Octave;
+
 }

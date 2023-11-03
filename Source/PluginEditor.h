@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "Frequency_Display.h"
+#include "utility_funcs.h"
 
 //==============================================================================
 /**

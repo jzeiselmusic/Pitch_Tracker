@@ -77,6 +77,11 @@ void Pitch_Tracker_PluginAudioProcessorEditor::timerCallback()
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     freq_rect.setVal(audioProcessor.frequency_val);
+    
+    std::tuple<enums::Key, enums::Octave> note = find_nearest_note(audioProcessor.frequency_val);
+    enums::Key actual_note = get<0>(note);
+    enums::Octave actual_octave = get<1>(note);
+    std::cout << actual_note << "\n";
     freq_rect.repaint();
 }
 
