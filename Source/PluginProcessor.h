@@ -67,5 +67,8 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Pitch_Tracker_PluginAudioProcessor)
     
     Biquad biquad_filter = Biquad();
-
+    
+    juce::dsp::IIR::Filter<float> highPassFilter;
+    juce::dsp::IIR::Filter<float> lowPassFilter;
+    
 };

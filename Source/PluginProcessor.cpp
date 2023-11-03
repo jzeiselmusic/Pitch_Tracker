@@ -16,9 +16,9 @@ Pitch_Tracker_PluginAudioProcessor::Pitch_Tracker_PluginAudioProcessor()
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
                       #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
+                       .withInput  ("Input",  juce::AudioChannelSet::mono(), true)
                       #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
+                       .withOutput ("Output", juce::AudioChannelSet::mono(), true)
                      #endif
                        )
 #endif
@@ -152,16 +152,23 @@ void Pitch_Tracker_PluginAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
     auto RMS = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
+    highPassFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(getSampleRate(), 100.0);
+    lowPassFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), 600.0);
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
+        juce::dsp::AudioBlock<float> block (buffer);
+        juce::dsp::ProcessContextReplacing<float> context (block);
+        highPassFilter.process(context);
+        lowPassFilter.process(context);
         for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
         {
             auto current_sample = buffer.getSample(channel, sample);
             if (channel == 0)
             {
                 /* process left channel */
-                if (RMS > 0.005)
+                if (RMS > 0.0005)
                 {
                     biquad_filter.processInput(current_sample);
                     frequency_val = (int)processKalmanFilter(&biquad_filter);
