@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "enums.h"
+#include <thread>
 
 extern float r_value;
 extern float q_value;
@@ -73,16 +74,23 @@ void Pitch_Tracker_PluginAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 }
 
+void nearest_note_thread(float frequency, Gui::Frequency_Display* freq_rect)
+{
+    std::tuple<int, int> note = find_nearest_note(frequency);
+    int actual_note = get<0>(note);
+    int actual_octave = get<1>(note);
+    
+    freq_rect->setNoteAndOctave(actual_note, actual_octave);
+}
+
 void Pitch_Tracker_PluginAudioProcessorEditor::timerCallback()
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     freq_rect.setVal(audioProcessor.frequency_val);
     
-    std::tuple<enums::Key, enums::Octave> note = find_nearest_note(audioProcessor.frequency_val);
-    enums::Key actual_note = get<0>(note);
-    enums::Octave actual_octave = get<1>(note);
-    std::cout << actual_note << "\n";
+    std::thread nearest_note_task(nearest_note_thread, audioProcessor.frequency_val, &freq_rect);
     freq_rect.repaint();
+    nearest_note_task.detach();
 }
 
 void Pitch_Tracker_PluginAudioProcessorEditor::sliderValueChanged(juce::Slider * slider)

@@ -29,6 +29,8 @@ public:
     void sliderValueChanged(juce::Slider*) override;
     void keyBoxChanged(void);
     void scaleBoxChanged(void);
+    
+    //void nearest_note_thread(float);
 
 private:
     // This reference is provided as a quick way for your editor to

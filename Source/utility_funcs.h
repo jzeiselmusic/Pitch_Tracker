@@ -13,7 +13,7 @@
 #include <vector>
 #include <tuple>
 
-inline std::tuple<enums::Key, enums::Octave> find_nearest_note(float frequency)
+inline std::tuple<int, int> find_nearest_note(float frequency)
 {
     std::vector<float> middle_scale {261.63, 277.18, 293.66, 311.13,
                                      329.63, 349.23, 369.99, 392.00,
@@ -44,9 +44,9 @@ inline std::tuple<enums::Key, enums::Octave> find_nearest_note(float frequency)
                                                &upper_upper_scale};
     
     int location = 0;
-    while (location < scales.size())
+    while (1)
     {
-        if (scales[location]->at(0) > frequency)
+        if (scales[location]->at(11) > frequency)
         {
             break;
         }
@@ -54,20 +54,17 @@ inline std::tuple<enums::Key, enums::Octave> find_nearest_note(float frequency)
         {
             location++;
         }
-        if (location == scales.size() - 1)
+        if (location == scales.size())
         {
             location--;
+            break;
         }
     }
-    
-    //std::cout << "location: " << location << "\n";
-    
+        
     // now we know the closest correct note is somewhere in the list of frequencies in scales[location]
     int note_location = 0;
-    //std::cout << "size: " << scales[location]->size() << "\n";
-    while (note_location < scales[0]->size())
+    while (1)
     {
-        //std::cout << "note location: " << note_location << "\n";
         if (scales[location]->at(note_location) > frequency)
         {
             break;
@@ -76,11 +73,12 @@ inline std::tuple<enums::Key, enums::Octave> find_nearest_note(float frequency)
         {
             note_location++;
         }
-        if (note_location == scales[0]->size() - 1)
+        if (note_location == scales[0]->size())
         {
             note_location--;
+            break;
         }
     }
     
-    return std::tuple<enums::Key, enums::Octave>{(enums::Key)(note_location+1), (enums::Octave)(location+1)};
+    return std::tuple<int, int>{(note_location+1), (location+1)};
 }
