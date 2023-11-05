@@ -130,6 +130,6 @@ void Pitch_Tracker_PluginAudioProcessorEditor::resized()
     q_factor_slider.setBounds(sliderLeftHand, sliderTop + 4*sliderHeight, sliderWidth, sliderHeight);
     freq_rect.setBounds(this->getLocalBounds().getX(), this->getLocalBounds().getY(), Window_X, Window_Y);
     
-    choose_key.setBounds(this->getLocalBounds().getWidth()/4, 300, 100, 65);
-    choose_scale.setBounds(2*(this->getLocalBounds().getWidth()/4) + 30, 300, 100, 65);
+    choose_key.setBounds(this->getLocalBounds().getWidth()/4, 275, 100, 65);
+    choose_scale.setBounds(2*(this->getLocalBounds().getWidth()/4) + 30, 275, 100, 65);
 }

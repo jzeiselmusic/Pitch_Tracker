@@ -10,6 +10,7 @@
 
 #pragma once
 #include <tuple>
+#include "utility_funcs.h"
 
 class Biquad {
     
@@ -30,8 +31,8 @@ public:
     
 private:
     
-    float past_a = 0;
-    float current_a = 0;
+    float past_a = getRandom();
+    float current_a = getRandom();
     
     float past_sample_1 = 0;
     float past_sample_2 = 0;

@@ -167,12 +167,8 @@ void Pitch_Tracker_PluginAudioProcessor::processBlock (juce::AudioBuffer<float>&
             auto current_sample = buffer.getSample(channel, sample);
             if (channel == 0)
             {
-                /* process left channel */
-                if (RMS > 0.0005)
-                {
                     biquad_filter.processInput(current_sample);
                     frequency_val = (int)processKalmanFilter(&biquad_filter);
-                }
             }
             if (channel == 1)
             {

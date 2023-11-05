@@ -12,6 +12,7 @@
 #include "enums.h"
 #include <vector>
 #include <tuple>
+#include <random>
 
 inline std::tuple<int, int> find_nearest_note(float frequency)
 {
@@ -81,4 +82,25 @@ inline std::tuple<int, int> find_nearest_note(float frequency)
     }
     
     return std::tuple<int, int>{(note_location+1), (location+1)};
+}
+
+inline float getRandom(void)
+{
+    // Create a random number generator engine
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> distribution(1.99f, 1.999f);
+
+    // Generate a random float in the specified range
+    return distribution(gen);
+}
+
+inline float getRandomInRange(float a1, float a2)
+{
+    
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> distribution(a1, a2);
+    
+    return distribution(gen);
 }
