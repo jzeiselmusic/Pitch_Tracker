@@ -32,5 +32,5 @@ inline float processKalmanFilter(Biquad* filter)
     
     filter->updateFrequency(new_a);
         
-    return (44100.0 / (2.0*M_PI))*std::acos(new_a / 2.0) - 15.0;
+    return (44100.0 / (2.0*M_PI))*std::acos(new_a / 2.0) - 10.0;
 }

@@ -5,8 +5,8 @@
               cppLanguageStandard="20" companyName="JZ">
   <MAINGROUP id="n3CSLv" name="Pitch_Tracker_Plugin">
     <GROUP id="{828B8C69-AACC-A5D5-7C9D-4695DA9C9FF4}" name="Source">
+      <FILE id="bJT8qR" name="IWave.h" compile="0" resource="0" file="Source/IWave.h"/>
       <FILE id="lMQxTi" name="Synth.h" compile="0" resource="0" file="Source/Synth.h"/>
-      <FILE id="Kd8V5Z" name="Synth.cpp" compile="1" resource="0" file="Source/Synth.cpp"/>
       <GROUP id="{202F74B0-A22E-130E-9B5C-B784C6E70167}" name="Utilities">
         <FILE id="xfXmbA" name="enums.h" compile="0" resource="0" file="Source/enums.h"/>
         <FILE id="EVxt7Y" name="utility_funcs.h" compile="0" resource="0" file="Source/utility_funcs.h"/>

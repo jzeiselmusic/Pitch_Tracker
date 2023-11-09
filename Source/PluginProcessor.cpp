@@ -94,8 +94,10 @@ void Pitch_Tracker_PluginAudioProcessor::changeProgramName (int index, const juc
 //==============================================================================
 void Pitch_Tracker_PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    m_time = 0.0;
+    m_deltaTime = 1.0 / sampleRate;
+    monoBuffer = new float[samplesPerBlock] {0};
+    RMSval.reset(getSampleRate(), 0.0005);
 }
 
 void Pitch_Tracker_PluginAudioProcessor::releaseResources()
@@ -130,30 +132,49 @@ bool Pitch_Tracker_PluginAudioProcessor::isBusesLayoutSupported (const BusesLayo
 }
 #endif
 
+void Pitch_Tracker_PluginAudioProcessor::mixWaves(float* pmonoBuffer, int numSamples) {
+    Random random;
+
+    // generate sin wave in mono
+    for (int sample = 0; sample < numSamples; ++sample) {
+        double triangle = my_synth.nextSample(m_time, numSamples);
+
+        pmonoBuffer[sample] = triangle;
+        m_time += m_deltaTime;
+    }
+}
+
 void Pitch_Tracker_PluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    auto RMS = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
+    // LPF and HPF setup and processing
+    
+    auto RMS = 0.001*buffer.getRMSLevel(0, 0, buffer.getNumSamples());
+    // if (RMS < 0.00001) RMS = 0.0;
+    RMSval.setTargetValue(RMS);
+    
     highPassFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(getSampleRate(), 100.0);
     lowPassFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), 600.0);
+    
+    // synth setup and processing
+    
+    my_synth.setFrequency(250.0);
+    my_synth.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMSval.getNextValue())));
+    
+    if (m_time >= std::numeric_limits<float>::max()) {
+        m_time = 0.0;
+    }
+
+    std::fill(monoBuffer, monoBuffer + buffer.getNumSamples(), 0);
+    mixWaves(monoBuffer, buffer.getNumSamples());
+    
+    
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -167,13 +188,15 @@ void Pitch_Tracker_PluginAudioProcessor::processBlock (juce::AudioBuffer<float>&
             auto current_sample = buffer.getSample(channel, sample);
             if (channel == 0)
             {
-                    biquad_filter.processInput(current_sample);
-                    frequency_val = (int)processKalmanFilter(&biquad_filter);
+                biquad_filter.processInput(current_sample);
+                frequency_val = (int)processKalmanFilter(&biquad_filter);
+                
+                channelData[sample] = current_sample + monoBuffer[sample];
             }
             if (channel == 1)
             {
             }
-            channelData[sample] = current_sample;
+            // channelData[sample] = current_sample;
         }
     }
 }
