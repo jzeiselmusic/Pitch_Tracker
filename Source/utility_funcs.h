@@ -13,6 +13,23 @@
 #include <vector>
 #include <tuple>
 #include <random>
+#include <map>
+
+inline std::map<enums::Key, float> noteDictionary
+{
+    {enums::C, 261.63},
+    {enums::C_s, 277.18},
+    {enums::D, 293.66},
+    {enums::D_s, 311.13},
+    {enums::E, 329.63},
+    {enums::F, 349.23},
+    {enums::F_s, 369.99},
+    {enums::G, 392.00},
+    {enums::G_s, 415.30},
+    {enums::A, 440.00},
+    {enums::A_s, 466.16},
+    {enums::B, 493.88}
+};
 
 inline std::tuple<int, int> find_nearest_note(float frequency)
 {

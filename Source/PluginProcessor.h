@@ -63,6 +63,8 @@ public:
     
     enums::Key current_key = enums::C;
     enums::Scale current_scale = enums::Major;
+    
+    enums::Key current_note = enums::C;
 
 private:
     //==============================================================================

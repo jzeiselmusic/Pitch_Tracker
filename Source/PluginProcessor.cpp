@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "Kalman.h"
+#include "utility_funcs.h"
 
 //==============================================================================
 Pitch_Tracker_PluginAudioProcessor::Pitch_Tracker_PluginAudioProcessor()
@@ -164,7 +165,7 @@ void Pitch_Tracker_PluginAudioProcessor::processBlock (juce::AudioBuffer<float>&
     
     // synth setup and processing
     
-    my_synth.setFrequency(250.0);
+    my_synth.setFrequency(noteDictionary.at(current_note));
     my_synth.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMSval.getNextValue())));
     
     if (m_time >= std::numeric_limits<float>::max()) {

@@ -74,13 +74,19 @@ void Pitch_Tracker_PluginAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 }
 
-void nearest_note_thread(float frequency, Gui::Frequency_Display* freq_rect)
+void nearest_note_thread(float frequency, Gui::Frequency_Display* freq_rect, Pitch_Tracker_PluginAudioProcessorEditor* p)
 {
     std::tuple<int, int> note = find_nearest_note(frequency);
     int actual_note = get<0>(note);
     int actual_octave = get<1>(note);
     
     freq_rect->setNoteAndOctave(actual_note, actual_octave);
+    p->updateCurrentNote((enums::Key)actual_note);
+}
+
+void Pitch_Tracker_PluginAudioProcessorEditor::updateCurrentNote(enums::Key currentNote)
+{
+    audioProcessor.current_note = currentNote;
 }
 
 void Pitch_Tracker_PluginAudioProcessorEditor::timerCallback()
@@ -88,7 +94,7 @@ void Pitch_Tracker_PluginAudioProcessorEditor::timerCallback()
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     freq_rect.setVal(audioProcessor.frequency_val);
     
-    std::thread nearest_note_task(nearest_note_thread, audioProcessor.frequency_val, &freq_rect);
+    std::thread nearest_note_task(nearest_note_thread, audioProcessor.frequency_val, &freq_rect, this);
     freq_rect.repaint();
     nearest_note_task.detach();
 }
