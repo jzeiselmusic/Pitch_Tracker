@@ -13,6 +13,7 @@
 namespace enums {
 
 typedef enum Key {
+    ANY_KEY = 0,
     C = 1,
     C_s = 2,
     D = 3,
@@ -28,6 +29,7 @@ typedef enum Key {
 } Key;
 
 typedef enum Scale {
+    ANY_SCALE = 0,
     Major = 1,
     Minor = 2
 } Scale;

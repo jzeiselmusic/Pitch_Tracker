@@ -30,6 +30,8 @@ public:
     void keyBoxChanged(void);
     void scaleBoxChanged(void);
     void updateCurrentNote(enums::Key);
+    enums::Key getCurrentKey(void);
+    enums::Scale getCurrentScale(void);
 
 private:
     // This reference is provided as a quick way for your editor to

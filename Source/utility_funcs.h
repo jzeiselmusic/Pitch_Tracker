@@ -31,25 +31,87 @@ inline std::map<enums::Key, float> noteDictionary
     {enums::B, 493.88}
 };
 
-inline std::tuple<int, int> find_nearest_note(float frequency)
+inline std::tuple<int, int> find_nearest_note(float frequency, enums::Key key, enums::Scale scale)
 {
-    std::vector<float> middle_scale {261.63, 277.18, 293.66, 311.13,
-                                     329.63, 349.23, 369.99, 392.00,
-                                     415.30, 440.00, 466.16, 493.88};
+    std::vector<float> middle_scale;
+    switch (key) {
+        case 0:
+            // case ANY_KEY
+            middle_scale = {261.63, 277.18, 293.66, 311.13,
+                            329.63, 349.23, 369.99, 392.00,
+                            415.30, 440.00, 466.16, 493.88};
+            break;
+        case 1:
+            // case KEY C
+            middle_scale = {261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88};
+            break;
+        case 2:
+            // case KEY C#
+            middle_scale = {277.18, 311.13, 349.23, 369.99, 415.30, 466.16, 523.25};
+            break;
+        case 3:
+            // case KEY D
+            middle_scale = {277.18, 293.66, 329.63, 369.99, 392.00, 440.00, 493.88};
+            break;
+        case 4:
+            // case KEY D#
+            middle_scale = {261.63, 293.66, 311.13, 349.23, 392.00, 415.30, 466.16};
+            break;
+        case 5:
+            // case KEY E
+            middle_scale = {277.18, 311.13, 329.63, 369.99, 415.30, 440.00, 493.88};
+            break;
+        case 6:
+            // case KEY F
+            middle_scale = {261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 466.16};
+            break;
+        case 7:
+            // case KEY F#
+            middle_scale = {277.18, 311.13, 349.23, 369.99, 415.30, 466.16, 493.88};
+            break;
+        case 8:
+            // case KEY G
+            middle_scale = {261.63, 293.66, 329.63, 369.99, 392.00, 440.00, 493.88};
+            break;
+        case 9:
+            // case KEY G#
+            middle_scale = {261.63, 277.18, 311.13, 349.23, 392.00, 415.30, 466.16};
+            break;
+        case 10:
+            // case KEY A
+            middle_scale = {277.18, 293.66, 329.63, 369.99, 415.30, 440.00, 493.88};
+            break;
+        case 11:
+            // case KEY A#
+            middle_scale = {261.63, 293.66, 311.13, 349.23, 392.00, 440.00, 466.16};
+            break;
+        case 12:
+            // case KEY B
+            middle_scale = {277.18, 311.13, 349.23, 369.99, 415.30, 466.16, 493.88};
+            break;
+        default:
+            // default ANY_KEY
+            middle_scale = {261.63, 277.18, 293.66, 311.13,
+                            329.63, 349.23, 369.99, 392.00,
+                            415.30, 440.00, 466.16, 493.88};
+            break;
+    }
+    
+    auto scale_size = middle_scale.size();
     
     std::vector<float> lower_scale;
-    lower_scale.resize(middle_scale.size());
+    lower_scale.resize(scale_size);
     
     std::vector<float> lower_lower_scale;
-    lower_lower_scale.resize(middle_scale.size());
+    lower_lower_scale.resize(scale_size);
     
     std::vector<float> upper_scale;
-    upper_scale.resize(middle_scale.size());
+    upper_scale.resize(scale_size);
     
     std::vector<float> upper_upper_scale;
-    upper_upper_scale.resize(middle_scale.size());
+    upper_upper_scale.resize(scale_size);
     
-    for (int i = 0; i < middle_scale.size(); ++i)
+    for (int i = 0; i < scale_size; ++i)
     {
         lower_scale[i] = middle_scale[i] / 2.0;
         lower_lower_scale[i] = middle_scale[i] / 4.0;
@@ -64,7 +126,7 @@ inline std::tuple<int, int> find_nearest_note(float frequency)
     int location = 0;
     while (1)
     {
-        if (scales[location]->at(11) > frequency)
+        if (scales[location]->at(scale_size-1) > frequency)
         {
             break;
         }

@@ -76,7 +76,7 @@ void Pitch_Tracker_PluginAudioProcessorEditor::paint (juce::Graphics& g)
 
 void nearest_note_thread(float frequency, Gui::Frequency_Display* freq_rect, Pitch_Tracker_PluginAudioProcessorEditor* p)
 {
-    std::tuple<int, int> note = find_nearest_note(frequency);
+    std::tuple<int, int> note = find_nearest_note(frequency, p->getCurrentKey(), p->getCurrentScale());
     int actual_note = get<0>(note);
     int actual_octave = get<1>(note);
     
@@ -87,6 +87,16 @@ void nearest_note_thread(float frequency, Gui::Frequency_Display* freq_rect, Pit
 void Pitch_Tracker_PluginAudioProcessorEditor::updateCurrentNote(enums::Key currentNote)
 {
     audioProcessor.current_note = currentNote;
+}
+
+enums::Key Pitch_Tracker_PluginAudioProcessorEditor::getCurrentKey(void)
+{
+    return audioProcessor.current_key;
+}
+
+enums::Scale Pitch_Tracker_PluginAudioProcessorEditor::getCurrentScale(void)
+{
+    return audioProcessor.current_scale;
 }
 
 void Pitch_Tracker_PluginAudioProcessorEditor::timerCallback()

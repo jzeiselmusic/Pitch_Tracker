@@ -157,7 +157,6 @@ void Pitch_Tracker_PluginAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // LPF and HPF setup and processing
     
     auto RMS = 0.001*buffer.getRMSLevel(0, 0, buffer.getNumSamples());
-    // if (RMS < 0.00001) RMS = 0.0;
     RMSval.setTargetValue(RMS);
     
     highPassFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(getSampleRate(), 100.0);
