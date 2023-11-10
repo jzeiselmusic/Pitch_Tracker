@@ -142,7 +142,7 @@ void Pitch_Tracker_PluginAudioProcessor::mixWaves(float* pmonoBuffer, int numSam
         double triangle_2 = my_synth_2.nextSample(m_time, numSamples);
         double triangle_3 = my_synth_3.nextSample(m_time, numSamples);
 
-        pmonoBuffer[sample] = triangle_1;
+        pmonoBuffer[sample] = (1.0/3.0)*(triangle_1 + triangle_2 + triangle_3);
         m_time += m_deltaTime;
     }
 }
@@ -169,10 +169,10 @@ void Pitch_Tracker_PluginAudioProcessor::processBlock (juce::AudioBuffer<float>&
     my_synth_1.setFrequency(noteDictionary.at(current_note));
     my_synth_1.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMS_current)));
     
-    my_synth_2.setFrequency(noteDictionary.at(current_note) + 3.0);
+    my_synth_2.setFrequency(noteDictionary.at(current_note) + 1.0);
     my_synth_2.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMS_current)));
     
-    my_synth_3.setFrequency(noteDictionary.at(current_note) - 3.0);
+    my_synth_3.setFrequency(noteDictionary.at(current_note) - 1.0);
     my_synth_3.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMS_current)));
     
     if (m_time >= std::numeric_limits<float>::max()) {
