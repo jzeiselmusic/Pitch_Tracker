@@ -74,7 +74,9 @@ private:
     juce::dsp::IIR::Filter<float> highPassFilter;
     juce::dsp::IIR::Filter<float> lowPassFilter;
     
-    JZSynth my_synth = JZSynth();
+    JZSynth my_synth_1 = JZSynth();
+    JZSynth my_synth_2 = JZSynth();
+    JZSynth my_synth_3 = JZSynth();
     
     juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> RMSval;
     

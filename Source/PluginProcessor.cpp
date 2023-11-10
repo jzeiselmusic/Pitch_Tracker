@@ -138,9 +138,11 @@ void Pitch_Tracker_PluginAudioProcessor::mixWaves(float* pmonoBuffer, int numSam
 
     // generate sin wave in mono
     for (int sample = 0; sample < numSamples; ++sample) {
-        double triangle = my_synth.nextSample(m_time, numSamples);
+        double triangle_1 = my_synth_1.nextSample(m_time, numSamples);
+        double triangle_2 = my_synth_2.nextSample(m_time, numSamples);
+        double triangle_3 = my_synth_3.nextSample(m_time, numSamples);
 
-        pmonoBuffer[sample] = triangle;
+        pmonoBuffer[sample] = triangle_1;
         m_time += m_deltaTime;
     }
 }
@@ -163,9 +165,15 @@ void Pitch_Tracker_PluginAudioProcessor::processBlock (juce::AudioBuffer<float>&
     lowPassFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), 600.0);
     
     // synth setup and processing
+    auto RMS_current = RMSval.getNextValue();
+    my_synth_1.setFrequency(noteDictionary.at(current_note));
+    my_synth_1.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMS_current)));
     
-    my_synth.setFrequency(noteDictionary.at(current_note));
-    my_synth.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMSval.getNextValue())));
+    my_synth_2.setFrequency(noteDictionary.at(current_note) + 3.0);
+    my_synth_2.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMS_current)));
+    
+    my_synth_3.setFrequency(noteDictionary.at(current_note) - 3.0);
+    my_synth_3.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMS_current)));
     
     if (m_time >= std::numeric_limits<float>::max()) {
         m_time = 0.0;
