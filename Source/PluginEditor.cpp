@@ -115,11 +115,11 @@ void Pitch_Tracker_PluginAudioProcessorEditor::sliderValueChanged(juce::Slider *
 {
     if (slider == &frequency_variance_slider)
     {
-        q_value = frequency_variance_slider.getValue();
+        audioProcessor.set_q_value(frequency_variance_slider.getValue());
     }
     else if (slider == &noise_variance_slider)
     {
-        r_value = noise_variance_slider.getValue();
+        audioProcessor.set_r_value(noise_variance_slider.getValue());
     }
     else if (slider == &q_factor_slider)
     {

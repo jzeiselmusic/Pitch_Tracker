@@ -12,6 +12,7 @@
 #include "Biquad.h"
 #include "enums.h"
 #include "Synth.h"
+#include "Kalman.h"
 
 //==============================================================================
 /**
@@ -56,20 +57,24 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-    float frequency_val = 0.0;
-    
     Biquad* getFilter(void) { return &(this->biquad_filter);};
     void mixWaves(float* pmonoBuffer, int numSamples);
+    void set_q_value(float new_value) {this->kalman_filter.set_q_value(new_value);};
+    void set_r_value(float new_value) {this->kalman_filter.set_r_value(new_value);};
     
     enums::Key current_key = enums::C;
     enums::Scale current_scale = enums::Major;
     enums::Key current_note = enums::C;
+    
+    float frequency_val = 0.0;
 
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Pitch_Tracker_PluginAudioProcessor)
     
     Biquad biquad_filter = Biquad();
+    
+    Kalman kalman_filter = Kalman();
     
     juce::dsp::IIR::Filter<float> highPassFilter;
     juce::dsp::IIR::Filter<float> lowPassFilter;
