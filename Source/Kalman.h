@@ -16,9 +16,9 @@
 
 class Kalman {
 public:
-    Kalman() {};
+    Kalman(Biquad* filter) {this->filter = filter;};
     ~Kalman() {};
-    float process(Biquad* filter, float sampleRate, float offSet) {
+    float process(float sampleRate, float offSet) {
         float p_update = this->p + this->q_value;
         float k = filter->getPastSampleOne() / (pow(filter->getPastSampleOne(), 2) + (this->r_value / p_update));
         float new_a = filter->getCurrentA() + k * filter->getE();
@@ -28,9 +28,15 @@ public:
         return (sampleRate / (2.0*M_PI))*std::acos(new_a / 2.0) + offSet;
     }
     
+    void reset(Biquad* filter) {
+        this->p = 0.0;
+        filter->reset();
+    }
+    
     void set_q_value(float new_value) {this->q_value = new_value;};
     void set_r_value(float new_value) {this->r_value = new_value;};
 private:
+    Biquad* filter;
     float q_value = 0.00005;
     float r_value = 0.0001;
     float p = 0.0;

@@ -74,7 +74,7 @@ private:
     
     Biquad biquad_filter = Biquad();
     
-    Kalman kalman_filter = Kalman();
+    Kalman kalman_filter = Kalman(&biquad_filter);
     
     juce::dsp::IIR::Filter<float> highPassFilter;
     juce::dsp::IIR::Filter<float> lowPassFilter;
