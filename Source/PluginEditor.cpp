@@ -54,11 +54,13 @@ Pitch_Tracker_PluginAudioProcessorEditor::Pitch_Tracker_PluginAudioProcessorEdit
     choose_key.setTitle("Key");
     choose_key.addItemList({"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"}, 1);
     choose_key.onChange = [this] { keyBoxChanged(); };
+    choose_key.setSelectedItemIndex(0);
     
     addAndMakeVisible(choose_scale);
     choose_scale.setTitle("Scale");
     choose_scale.addItemList({"Major","Minor"}, 1);
     choose_scale.onChange = [this] { scaleBoxChanged(); };
+    choose_scale.setSelectedItemIndex(0);
     
     startTimerHz(5);
 }

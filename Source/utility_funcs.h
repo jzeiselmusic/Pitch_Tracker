@@ -9,6 +9,7 @@
 */
 
 #pragma once
+#include <JuceHeader.h>
 #include "enums.h"
 #include <vector>
 #include <tuple>
@@ -31,66 +32,68 @@ inline std::map<enums::Key, float> noteDictionary
     {enums::B, 493.88}
 };
 
+inline std::map<float, enums::Key> noteDictionaryRev
+{
+    {261.63, enums::C},
+    {277.18, enums::C_s},
+    {293.66, enums::D},
+    {311.13, enums::D_s},
+    {329.63, enums::E},
+    {349.23, enums::F},
+    {369.99, enums::F_s},
+    {392.00, enums::G},
+    {415.30, enums::G_s},
+    {440.00, enums::A},
+    {466.16, enums::A_s},
+    {493.88, enums::B}
+};
+
 inline std::tuple<int, int> find_nearest_note(float frequency, enums::Key key, enums::Scale scale)
 {
     std::vector<float> middle_scale;
     switch (key) {
-        case 0:
-            // case ANY_KEY
+        case enums::Key::ANY_KEY :
             middle_scale = {261.63, 277.18, 293.66, 311.13,
                             329.63, 349.23, 369.99, 392.00,
                             415.30, 440.00, 466.16, 493.88};
             break;
-        case 1:
-            // case KEY C
+        case enums::Key::C :
             middle_scale = {261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88};
             break;
-        case 2:
-            // case KEY C#
-            middle_scale = {277.18, 311.13, 349.23, 369.99, 415.30, 466.16, 523.25};
+        case enums::Key::C_s :
+            middle_scale = {261.63, 277.18, 311.13, 349.23, 369.99, 415.30, 466.16};
             break;
-        case 3:
-            // case KEY D
+        case enums::Key::D :
             middle_scale = {277.18, 293.66, 329.63, 369.99, 392.00, 440.00, 493.88};
             break;
-        case 4:
-            // case KEY D#
+        case enums::Key::D_s :
             middle_scale = {261.63, 293.66, 311.13, 349.23, 392.00, 415.30, 466.16};
             break;
-        case 5:
-            // case KEY E
+        case enums::Key::E :
             middle_scale = {277.18, 311.13, 329.63, 369.99, 415.30, 440.00, 493.88};
             break;
-        case 6:
-            // case KEY F
+        case enums::Key::F :
             middle_scale = {261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 466.16};
             break;
-        case 7:
-            // case KEY F#
+        case enums::Key::F_s :
             middle_scale = {277.18, 311.13, 349.23, 369.99, 415.30, 466.16, 493.88};
             break;
-        case 8:
-            // case KEY G
+        case enums::Key::G :
             middle_scale = {261.63, 293.66, 329.63, 369.99, 392.00, 440.00, 493.88};
             break;
-        case 9:
-            // case KEY G#
+        case enums::Key::G_s :
             middle_scale = {261.63, 277.18, 311.13, 349.23, 392.00, 415.30, 466.16};
             break;
-        case 10:
-            // case KEY A
+        case enums::Key::A :
             middle_scale = {277.18, 293.66, 329.63, 369.99, 415.30, 440.00, 493.88};
             break;
-        case 11:
-            // case KEY A#
+        case enums::Key::A_s :
             middle_scale = {261.63, 293.66, 311.13, 349.23, 392.00, 440.00, 466.16};
             break;
-        case 12:
-            // case KEY B
+        case enums::Key::B :
             middle_scale = {277.18, 311.13, 349.23, 369.99, 415.30, 466.16, 493.88};
             break;
         default:
-            // default ANY_KEY
             middle_scale = {261.63, 277.18, 293.66, 311.13,
                             329.63, 349.23, 369.99, 392.00,
                             415.30, 440.00, 466.16, 493.88};
@@ -160,7 +163,9 @@ inline std::tuple<int, int> find_nearest_note(float frequency, enums::Key key, e
         }
     }
     
-    return std::tuple<int, int>{(note_location+1), (location+1)};
+    enums::Key final_key = noteDictionaryRev.at(middle_scale[note_location]);
+    
+    return std::tuple<int, int>{(int)final_key, (location+1)};
 }
 
 inline float getRandom(void)
