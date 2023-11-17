@@ -29,12 +29,8 @@ public:
         float new_a = filter->getCurrentA() + k * filter->getE();
         this->p = (1.0 - (pow(filter->getPastSampleOne(), 2) / (pow(filter->getPastSampleOne(), 2) + (this->r_value / p_update)))) * p_update;
         if (abs(new_a) < 1.98 || abs(new_a) > 2.0) new_a = getRandom();
-        // find quantized hz for new a
-        float new_a_hz = noteDictionary.at(enums::Key(std::get<0>(find_nearest_note(new_a, this->current_key, this->current_scale))));
-        // turn hz into normalized freq
-        float new_new_a = convert_from_hz(new_a_hz, sampleRate);
-        filter->updateFrequency(new_new_a);
-        return convert_to_hz(new_new_a, sampleRate);
+        filter->updateFrequency(new_a);
+        return convert_to_hz(new_a, sampleRate) + offSet;
     }
     
     void reset(Biquad* filter, enums::Key key, enums::Scale scale) {

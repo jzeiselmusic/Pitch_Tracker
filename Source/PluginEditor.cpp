@@ -18,8 +18,6 @@ extern float q_value;
 Pitch_Tracker_PluginAudioProcessorEditor::Pitch_Tracker_PluginAudioProcessorEditor (Pitch_Tracker_PluginAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
     setSize (Window_X, Window_Y);
     
     addAndMakeVisible(freq_rect);
