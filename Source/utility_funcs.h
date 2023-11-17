@@ -188,3 +188,11 @@ inline float getRandomInRange(float a1, float a2)
     
     return distribution(gen);
 }
+
+inline float convert_to_hz(float a, float sampleRate) {
+    return (sampleRate / (2.0*M_PI))*std::acos(a / 2.0);
+}
+
+inline float convert_from_hz(float hz, float sampleRate) {
+    return 2.0*std::cos((hz * 2.0 * M_PI / sampleRate));
+}

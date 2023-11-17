@@ -130,11 +130,13 @@ void Pitch_Tracker_PluginAudioProcessorEditor::sliderValueChanged(juce::Slider *
 void Pitch_Tracker_PluginAudioProcessorEditor::keyBoxChanged()
 {
     audioProcessor.current_key = (enums::Key)choose_key.getSelectedId();
+    audioProcessor.reset_kalman();
 }
 
 void Pitch_Tracker_PluginAudioProcessorEditor::scaleBoxChanged()
 {
     audioProcessor.current_scale = (enums::Scale)choose_scale.getSelectedId();
+    audioProcessor.reset_kalman();
 }
 
 void Pitch_Tracker_PluginAudioProcessorEditor::resized()
