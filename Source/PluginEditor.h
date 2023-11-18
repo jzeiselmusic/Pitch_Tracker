@@ -77,6 +77,7 @@ private:
     juce::ComboBox choose_key;
     juce::ComboBox choose_scale;
     
+    // local bounds
     int Window_X = 1000;
     int Window_Y = 400;
     

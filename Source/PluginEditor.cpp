@@ -116,6 +116,7 @@ void Pitch_Tracker_PluginAudioProcessorEditor::timerCallback()
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     freq_rect.setVal(audioProcessor.frequency_val);
+    simple_freq.setCalculatedFrequency(audioProcessor.frequency_val);
     
     std::thread nearest_note_task(nearest_note_thread, audioProcessor.frequency_val, &freq_rect, this);
     freq_rect.repaint();
@@ -152,15 +153,18 @@ void Pitch_Tracker_PluginAudioProcessorEditor::scaleBoxChanged()
 
 void Pitch_Tracker_PluginAudioProcessorEditor::resized()
 {
-    auto sliderLeftHand = this->getLocalBounds().getWidth()/3.0;
-    auto sliderTop = this->getLocalBounds().getHeight()/10.0;
+    auto bounds_width = this->getLocalBounds().getWidth() / 2.0;
+    auto bounds_height = this->getLocalBounds().getHeight();
+    auto sliderLeftHand = bounds_width / 3.0;
+    auto sliderTop = bounds_height / 10.0;
     auto sliderHeight = 20.0;
-    auto sliderWidth = this->getLocalBounds().getWidth()/2.0;
+    auto sliderWidth = bounds_width / 2.0;
     frequency_variance_slider.setBounds(sliderLeftHand, sliderTop, sliderWidth, sliderHeight);
     noise_variance_slider.setBounds(sliderLeftHand, sliderTop + 2*sliderHeight, sliderWidth, sliderHeight);
     q_factor_slider.setBounds(sliderLeftHand, sliderTop + 4*sliderHeight, sliderWidth, sliderHeight);
-    freq_rect.setBounds(this->getLocalBounds().getX(), this->getLocalBounds().getY(), Window_X, Window_Y);
+    freq_rect.setBounds(this->getLocalBounds().getX() / 2.0, this->getLocalBounds().getY(), Window_X / 2.0, Window_Y);
     
-    choose_key.setBounds(this->getLocalBounds().getWidth()/4, 275, 100, 65);
-    choose_scale.setBounds(2*(this->getLocalBounds().getWidth()/4) + 30, 275, 100, 65);
+    simple_freq.setBounds(Window_X / 2.0, this->getLocalBounds().getY(), Window_X / 2.0, Window_Y);
+    choose_key.setBounds(bounds_width / 4, 275, 100, 65);
+    choose_scale.setBounds(2*(bounds_width / 4) + 30, 275, 100, 65);
 }

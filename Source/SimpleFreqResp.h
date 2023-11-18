@@ -21,6 +21,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_dsp/juce_dsp.h>
 #include <string>
+#include "VerticalLine.h"
 
 using namespace juce;
 
@@ -55,7 +56,7 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
 
     m_plot.setDownsamplingType(cmp::DownsamplingType::x_downsampling);
 
-    m_plot.setTitle("Left & Right input frequency information");
+    m_plot.setTitle("frequency information");
     m_plot.setYLabel("Power [dB]");
     m_plot.setXLabel("Frequency [Hz]");
 
@@ -93,7 +94,7 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
     m_plot.plot(fftData, x_data);
   }
 
-  void resized() override {
+    void resized() override {
     auto rect = getLocalBounds();
 
     m_plot.setBounds(rect.removeFromLeft(proportionOfWidth(0.7f))
@@ -105,13 +106,13 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
     rect = getLocalBounds();
     m_tracepoint_cb_label.setBounds(
         rect.removeFromBottom(proportionOfHeight(0.15f)));
-  }
+    }
 
-  void releaseResources() override {
+    void releaseResources() override {
     // (nothing to do here)
-  }
+    }
 
-  void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill) override {
+    void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill) override {
     if (bufferToFill.buffer->getNumChannels() > 0) {
       const auto* channelData =
           bufferToFill.buffer->getReadPointer(0, bufferToFill.startSample);
@@ -123,102 +124,108 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
 
       bufferToFill.clearActiveBufferRegion();
     }
-  }
+    }
 
-  //==============================================================================
-  void paint(Graphics& g) override {
-    g.setColour(juce::Colours::grey);
+    //==============================================================================
+    
+    void paint(Graphics& g) override {
+        g.setColour(juce::Colours::grey);
 
-    g.drawRoundedRectangle(m_plot.getBounds().toFloat(), 5.0f, 5.0f);
-    g.drawRoundedRectangle(m_tracepoint_cb_label.getBounds().toFloat(), 5.0f,
+        g.drawRoundedRectangle(m_plot.getBounds().toFloat(), 5.0f, 5.0f);
+        g.drawRoundedRectangle(m_tracepoint_cb_label.getBounds().toFloat(), 5.0f,
                            5.0f);
-    g.drawRoundedRectangle(audioSetupComp.getBounds().toFloat(), 5.0f, 5.0f);
-  }
-
-  void timerCallback() override {
-    if (nextFFTBlockReady) {
-      for (size_t i = 0; i < num_channels; i++) {
-        calcNextFrequencyResponse(i);
-      }
-
-      m_plot.realTimePlot(fftData);
-
-      nextFFTBlockReady = false;
+        g.drawRoundedRectangle(audioSetupComp.getBounds().toFloat(), 5.0f, 5.0f);
     }
-  }
 
-  void pushNextSampleIntoFifo(const float sample,
+    void timerCallback() override {
+        if (nextFFTBlockReady) {
+            for (size_t i = 0; i < num_channels; i++) {
+                calcNextFrequencyResponse(i);
+            }
+
+            m_plot.realTimePlot(fftData);
+            m_plot.toFront(false);
+            nextFFTBlockReady = false;
+        }
+    }
+
+    void pushNextSampleIntoFifo(const float sample,
                               const std::size_t ch_idx) noexcept {
-    if (fifoIndex[ch_idx] == fftSize) {
-      if (!nextFFTBlockReady) {
-        std::copy(fifo[ch_idx].begin(), fifo[ch_idx].end(),
-                  fftData[ch_idx].begin());
+        if (fifoIndex[ch_idx] == fftSize) {
+            if (!nextFFTBlockReady) {
+                std::copy(fifo[ch_idx].begin(), fifo[ch_idx].end(),
+                          fftData[ch_idx].begin());
+                nextFFTBlockReady = true;
+            }
 
-        nextFFTBlockReady = true;
-      }
+            fifoIndex[ch_idx] = 0;
+        }
 
-      fifoIndex[ch_idx] = 0;
+        fifo[ch_idx][fifoIndex[ch_idx]++] = sample;
     }
 
-    fifo[ch_idx][fifoIndex[ch_idx]++] = sample;
-  }
+    void calcNextFrequencyResponse(const std::size_t ch_idx) {
+        window.multiplyWithWindowingTable(fftData[ch_idx].data(), fftSize);  // [1]
 
-  void calcNextFrequencyResponse(const std::size_t ch_idx) {
-    window.multiplyWithWindowingTable(fftData[ch_idx].data(), fftSize);  // [1]
+        forwardFFT.performFrequencyOnlyForwardTransform(fftData[ch_idx].data());
 
-    forwardFFT.performFrequencyOnlyForwardTransform(fftData[ch_idx].data());
+        constexpr auto scale = 1.0f / float(fftSize);
 
-    constexpr auto scale = 1.0f / float(fftSize);
+        constexpr auto smoothing_factor = 0.5f;
 
-    constexpr auto smoothing_factor = 0.5f;
+        auto it_smooth = fftDataSmooth[ch_idx].begin();
+        for (auto& s : fftData[ch_idx]) {
+            s = s * scale;
 
-    auto it_smooth = fftDataSmooth[ch_idx].begin();
-    for (auto& s : fftData[ch_idx]) {
-      s = s * scale;
+            *it_smooth++ = s = (*it_smooth + s) * smoothing_factor;
 
-      *it_smooth++ = s = (*it_smooth + s) * smoothing_factor;
+            if (s < 1e-7f) {
+                s = -70;
+                continue;
+            }
 
-      if (s < 1e-7f) {
-        s = -70;
-        continue;
-      }
+            constexpr auto smoothing_compensation = 10.0f;
 
-      constexpr auto smoothing_compensation = 10.0f;
-
-      s = 10.0f * log10f(s) + smoothing_compensation;
+            s = 10.0f * log10f(s) + smoothing_compensation;
+        }
     }
-  }
 
-  enum { fftOrder = 11, fftSize = 1 << fftOrder };
+    enum { fftOrder = 11, fftSize = 1 << fftOrder };
 
+    void setCalculatedFrequency(float new_hz) {
+        current_calculated_frequency = new_hz;
+    }
+    
  private:
-  static constexpr int num_channels{1};
+    static constexpr int num_channels{1};
 
-  juce::AudioDeviceSelectorComponent audioSetupComp;
+    juce::AudioDeviceSelectorComponent audioSetupComp;
 
-  juce::dsp::WindowingFunction<float> window;
+    juce::dsp::WindowingFunction<float> window;
 
-  dsp::FFT forwardFFT;
+    dsp::FFT forwardFFT;
 
-  std::vector<std::vector<float>> fifo =
+    std::vector<std::vector<float>> fifo =
       decltype(fifo)(num_channels, std::vector<float>(fftSize));
 
-  decltype(fifo) x_data =
+    decltype(fifo) x_data =
       decltype(fifo)(num_channels, std::vector<float>(2 * fftSize));
 
-  decltype(fifo) fftData =
+    decltype(fifo) fftData =
       decltype(fifo)(num_channels, std::vector<float>(2 * fftSize));
 
-  decltype(fifo) fftDataSmooth =
+    decltype(fifo) fftDataSmooth =
       decltype(fifo)(num_channels, std::vector<float>(2 * fftSize));
 
-  std::vector<int> fifoIndex = std::vector<int>(num_channels);
+    std::vector<int> fifoIndex = std::vector<int>(num_channels);
 
-  bool nextFFTBlockReady = false;
+    bool nextFFTBlockReady = false;
 
-  cmp::SemiLogX m_plot;
+    cmp::SemiLogX m_plot;
 
-  juce::Label m_tracepoint_cb_label;
+    juce::Label m_tracepoint_cb_label;
+    
+    float current_calculated_frequency = 0.0;
 
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SimpleFreqRespDemo)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SimpleFreqRespDemo)
 };
