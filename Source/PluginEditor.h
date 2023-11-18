@@ -12,6 +12,29 @@
 #include "PluginProcessor.h"
 #include "Frequency_Display.h"
 #include "utility_funcs.h"
+#include "SimpleFreqResp.h"
+
+class SliderLookAndFeel : public LookAndFeel_V4
+{
+public:
+    SliderLookAndFeel()
+    {
+        // Set the text color for the slider text box
+        setColour(Slider::textBoxTextColourId, Colours::black);
+    }
+
+    // Override other methods as needed for customizing the look and feel
+};
+
+class LabelLookAndFeel : public LookAndFeel_V4
+{
+public:
+    LabelLookAndFeel()
+    {
+        setColour(Label::textColourId, Colours::black);
+    }
+};
+
 
 //==============================================================================
 /**
@@ -40,6 +63,8 @@ private:
     
     Gui::Frequency_Display freq_rect;
     
+    SimpleFreqRespDemo simple_freq;
+    
     juce::Slider frequency_variance_slider;
     juce::Label frequency_variance_label;
     
@@ -52,8 +77,11 @@ private:
     juce::ComboBox choose_key;
     juce::ComboBox choose_scale;
     
-    int Window_X = 500;
+    int Window_X = 1000;
     int Window_Y = 400;
+    
+    SliderLookAndFeel sliderLook;
+    LabelLookAndFeel labelLook;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Pitch_Tracker_PluginAudioProcessorEditor)
 };

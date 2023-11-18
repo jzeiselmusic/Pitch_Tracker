@@ -11,16 +11,15 @@
 #include "enums.h"
 #include <thread>
 
-extern float r_value;
-extern float q_value;
-
 //==============================================================================
 Pitch_Tracker_PluginAudioProcessorEditor::Pitch_Tracker_PluginAudioProcessorEditor (Pitch_Tracker_PluginAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+
     setSize (Window_X, Window_Y);
     
     addAndMakeVisible(freq_rect);
+    addAndMakeVisible(simple_freq);
     
     addAndMakeVisible(frequency_variance_slider);
     frequency_variance_slider.setRange(0.00000001, 10.0);
@@ -30,6 +29,8 @@ Pitch_Tracker_PluginAudioProcessorEditor::Pitch_Tracker_PluginAudioProcessorEdit
     frequency_variance_label.setText("freq. variance", juce::dontSendNotification);
     frequency_variance_label.attachToComponent(&frequency_variance_slider, true);
     frequency_variance_slider.setValue(0.0000001);
+    frequency_variance_slider.setLookAndFeel(&sliderLook);
+    frequency_variance_label.setLookAndFeel(&labelLook);
     
     addAndMakeVisible(noise_variance_slider);
     noise_variance_slider.setRange(0.00000001, 10.0);
@@ -39,6 +40,8 @@ Pitch_Tracker_PluginAudioProcessorEditor::Pitch_Tracker_PluginAudioProcessorEdit
     noise_variance_label.setText("noise variance", juce::dontSendNotification);
     noise_variance_label.attachToComponent(&noise_variance_slider, true);
     noise_variance_slider.setValue(0.003);
+    noise_variance_slider.setLookAndFeel(&sliderLook);
+    noise_variance_label.setLookAndFeel(&labelLook);
     
     addAndMakeVisible(q_factor_slider);
     q_factor_slider.setRange(0.01, 1.0);
@@ -47,6 +50,8 @@ Pitch_Tracker_PluginAudioProcessorEditor::Pitch_Tracker_PluginAudioProcessorEdit
     q_factor_label.setText("Q factor", juce::dontSendNotification);
     q_factor_label.attachToComponent(&q_factor_slider, true);
     q_factor_slider.setValue(0.1);
+    q_factor_slider.setLookAndFeel(&sliderLook);
+    q_factor_label.setLookAndFeel(&labelLook);
     
     addAndMakeVisible(choose_key);
     choose_key.setTitle("Key");
@@ -65,6 +70,14 @@ Pitch_Tracker_PluginAudioProcessorEditor::Pitch_Tracker_PluginAudioProcessorEdit
 
 Pitch_Tracker_PluginAudioProcessorEditor::~Pitch_Tracker_PluginAudioProcessorEditor()
 {
+    frequency_variance_slider.setLookAndFeel(nullptr);
+    frequency_variance_label.setLookAndFeel(nullptr);
+    
+    noise_variance_slider.setLookAndFeel(nullptr);
+    noise_variance_label.setLookAndFeel(nullptr);
+    
+    q_factor_slider.setLookAndFeel(nullptr);
+    q_factor_label.setLookAndFeel(nullptr);
 }
 
 //==============================================================================

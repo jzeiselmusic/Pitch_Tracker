@@ -37,7 +37,7 @@ namespace Gui
                                    textBoundsWidth + (2*rect_padding),
                                    textBoundsHeight + (2*rect_padding),
                                    5.0, 4.0);
-            g.setColour(juce::Colours::burlywood);
+            g.setColour(juce::Colours::lightcyan);
             g.fillRect(bounds);
 
             // Set the font and color for the text
