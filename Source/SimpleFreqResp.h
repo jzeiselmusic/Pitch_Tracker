@@ -144,11 +144,9 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
             }
 
             m_plot.realTimePlot(fftData);
-            // m_plot.toFront(false);
-            nextFFTBlockReady = false;
-            
             m_plot.setXTicks({current_calculated_frequency});
             m_plot.repaint();
+            nextFFTBlockReady = false;
         }
     }
 
