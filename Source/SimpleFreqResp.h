@@ -71,7 +71,7 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
           "Callback from tracepoint:\nX: " +
               std::to_string(new_trace_point.getX()) +
               "\nY: " + std::to_string(new_trace_point.getY()),
-          juce::NotificationType::dontSendNotification);
+                juce::NotificationType::dontSendNotification);
     };
   }
 
@@ -144,8 +144,11 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
             }
 
             m_plot.realTimePlot(fftData);
-            m_plot.toFront(false);
+            // m_plot.toFront(false);
             nextFFTBlockReady = false;
+            
+            m_plot.setXTicks({current_calculated_frequency});
+            m_plot.repaint();
         }
     }
 
