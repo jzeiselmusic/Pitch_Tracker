@@ -1,3 +1,7 @@
+<!-- markdownlint-disable MD033 -->
+<img src="./Assets/University_of_Illinois_at_Chicago_circle_logo.png" alt="drawing" width="150"/>
+<!-- markdownlint-enable MD033 -->
+
 # Pitch Tracking Plugin
 
 This is an application of the following paper from the DAFX 2023 Conference:
