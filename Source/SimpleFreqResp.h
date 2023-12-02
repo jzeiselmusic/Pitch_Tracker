@@ -21,7 +21,6 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_dsp/juce_dsp.h>
 #include <string>
-#include "VerticalLine.h"
 
 using namespace juce;
 
@@ -227,6 +226,8 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
     juce::Label m_tracepoint_cb_label;
     
     float current_calculated_frequency = 0.0;
+    
+    std::vector<float> testData = std::vector<float>(2 * fftSize);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SimpleFreqRespDemo)
 };

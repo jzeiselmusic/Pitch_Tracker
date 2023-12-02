@@ -57,8 +57,6 @@
           </GROUP>
         </GROUP>
       </GROUP>
-      <FILE id="bJT8qR" name="IWave.h" compile="0" resource="0" file="Source/IWave.h"/>
-      <FILE id="lMQxTi" name="Synth.h" compile="0" resource="0" file="Source/Synth.h"/>
       <GROUP id="{202F74B0-A22E-130E-9B5C-B784C6E70167}" name="Utilities">
         <FILE id="xfXmbA" name="enums.h" compile="0" resource="0" file="Source/enums.h"/>
         <FILE id="EVxt7Y" name="utility_funcs.h" compile="0" resource="0" file="Source/utility_funcs.h"/>

@@ -11,7 +11,6 @@
 #include <JuceHeader.h>
 #include "Biquad.h"
 #include "enums.h"
-#include "Synth.h"
 #include "Kalman.h"
 
 //==============================================================================
@@ -58,7 +57,6 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     Biquad* getFilter(void) { return &(this->biquad_filter);};
-    void mixWaves(float* pmonoBuffer, int numSamples);
     void set_q_value(float new_value) {this->kalman_filter.set_q_value(new_value);};
     void set_r_value(float new_value) {this->kalman_filter.set_r_value(new_value);};
     void reset_kalman(void) {this->kalman_filter.reset(&(this->biquad_filter), current_key, current_scale);};
@@ -80,14 +78,6 @@ private:
     juce::dsp::IIR::Filter<float> highPassFilter;
     juce::dsp::IIR::Filter<float> lowPassFilter;
     
-    JZSynth my_synth_1 = JZSynth();
-    JZSynth my_synth_2 = JZSynth();
-    JZSynth my_synth_3 = JZSynth();
-    
     juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> RMSval;
-    
-    double m_time;
-    double m_deltaTime;
-    float *monoBuffer;
     
 };

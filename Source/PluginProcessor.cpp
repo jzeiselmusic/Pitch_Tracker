@@ -95,9 +95,6 @@ void Pitch_Tracker_PluginAudioProcessor::changeProgramName (int index, const juc
 //==============================================================================
 void Pitch_Tracker_PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    m_time = 0.0;
-    m_deltaTime = 1.0 / sampleRate;
-    monoBuffer = new float[samplesPerBlock] {0};
     RMSval.reset(getSampleRate(), 0.0005);
 }
 
@@ -133,20 +130,6 @@ bool Pitch_Tracker_PluginAudioProcessor::isBusesLayoutSupported (const BusesLayo
 }
 #endif
 
-void Pitch_Tracker_PluginAudioProcessor::mixWaves(float* pmonoBuffer, int numSamples) {
-    Random random;
-
-    // generate sin wave in mono
-    for (int sample = 0; sample < numSamples; ++sample) {
-        double triangle_1 = my_synth_1.nextSample(m_time, numSamples);
-        double triangle_2 = my_synth_2.nextSample(m_time, numSamples);
-        double triangle_3 = my_synth_3.nextSample(m_time, numSamples);
-
-        pmonoBuffer[sample] = (1.0/3.0)*(triangle_1 + triangle_2 + triangle_3);
-        m_time += m_deltaTime;
-    }
-}
-
 void Pitch_Tracker_PluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
@@ -166,24 +149,7 @@ void Pitch_Tracker_PluginAudioProcessor::processBlock (juce::AudioBuffer<float>&
     
     // synth setup and processing
     auto RMS_current = RMSval.getNextValue();
-    my_synth_1.setFrequency(noteDictionary.at(current_note));
-    my_synth_1.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMS_current)));
-    
-    my_synth_2.setFrequency(noteDictionary.at(current_note) + 1.0);
-    my_synth_2.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMS_current)));
-    
-    my_synth_3.setFrequency(noteDictionary.at(current_note) - 1.0);
-    my_synth_3.setAmplitude(-1.0*(100.0 + juce::Decibels::gainToDecibels(RMS_current)));
-    
-    if (m_time >= std::numeric_limits<float>::max()) {
-        m_time = 0.0;
-    }
 
-    std::fill(monoBuffer, monoBuffer + buffer.getNumSamples(), 0);
-    mixWaves(monoBuffer, buffer.getNumSamples());
-    
-    
-    
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
@@ -198,8 +164,7 @@ void Pitch_Tracker_PluginAudioProcessor::processBlock (juce::AudioBuffer<float>&
             {
                 if (buffer.getRMSLevel(0, 0, buffer.getNumSamples()) > 0.0005) {
                     biquad_filter.processInput(current_sample);
-                    frequency_val = (int)kalman_filter.process(getSampleRate(), -10.0);
-                    channelData[sample] = current_sample + monoBuffer[sample];
+                    frequency_val = (int)kalman_filter.process(getSampleRate(), -12.0);
                 }
             }
             if (channel == 1)

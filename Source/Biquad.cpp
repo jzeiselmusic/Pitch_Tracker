@@ -52,8 +52,8 @@ void Biquad::setRho(float new_val)
 
 void Biquad::updateFrequency(float new_a)
 {
-    this->past_a = this->current_a;
-    this->current_a = new_a;
+    past_a = this->current_a;
+    current_a = new_a;
 }
 
 void Biquad::processInput(float input_y)

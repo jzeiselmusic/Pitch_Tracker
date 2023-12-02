@@ -30,10 +30,10 @@ public:
     void setRho(float new_val);
     
     void reset(void) {
-        this->past_a = getRandom();
-        this->current_a = getRandom();
-        this->past_sample_1 = 0.0;
-        this->past_sample_2 = 0.0;
+        past_a = getRandom();
+        current_a = getRandom();
+        past_sample_1 = 0.0;
+        past_sample_2 = 0.0;
     }
     
 private:
