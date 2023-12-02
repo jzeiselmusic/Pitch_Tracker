@@ -22,6 +22,9 @@ To run this application, follow these steps:
 
 ## Usage ##
 
+
+<img src="./window.png" alt="drawing" width="400"/>
+
 Use the sliders at the top of the window to pick different hyperparameter values for the Kalman filter. These values will have a large effect on the accuracy of the pitch detection algorithm. 
 
 The drop-down boxes affect only the "note" determination and note the frequency determination. In other words, the frequency is quantized to whatever note is closest in the chosen key and scale. That quantized note is shown to the right of the frequency. 
