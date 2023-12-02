@@ -23,7 +23,7 @@ To run this application, follow these steps:
 ## Usage ##
 
 
-<img src="./window.png" alt="drawing" width="400"/>
+<img src="./window.png" alt="drawing" width="100"/>
 
 Use the sliders at the top of the window to pick different hyperparameter values for the Kalman filter. These values will have a large effect on the accuracy of the pitch detection algorithm. 
 
