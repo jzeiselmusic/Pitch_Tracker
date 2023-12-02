@@ -8,52 +8,54 @@
       <FILE id="C561Yw" name="SimpleFreqResp.h" compile="0" resource="0"
             file="Source/SimpleFreqResp.h"/>
       <GROUP id="{39C8FFD9-64BD-A7AB-4688-D7579901116F}" name="cmp">
+        <GROUP id="{B9957686-D26F-298B-155D-97F02C1BFC71}" name="include">
+          <GROUP id="{2CB04617-34CF-075B-2FBA-FAB3C462F244}" name="include_internal">
+            <FILE id="oQcaLe" name="cmp_downsampler.h" compile="0" resource="0"
+                  file="./Source/cmp/include/include_internal/cmp_downsampler.h"/>
+            <FILE id="mGEqCs" name="cmp_frame.h" compile="0" resource="0" file="./Source/cmp/include/include_internal/cmp_frame.h"/>
+            <FILE id="XY8Nzz" name="cmp_graph_area.h" compile="0" resource="0"
+                  file="./Source/cmp/include/include_internal/cmp_graph_area.h"/>
+            <FILE id="OniWzA" name="cmp_graph_line.h" compile="0" resource="0"
+                  file="./Source/cmp/include/include_internal/cmp_graph_line.h"/>
+            <FILE id="e46xgV" name="cmp_grid.h" compile="0" resource="0" file="./Source/cmp/include/include_internal/cmp_grid.h"/>
+            <FILE id="z94bU0" name="cmp_label.h" compile="0" resource="0" file="./Source/cmp/include/include_internal/cmp_label.h"/>
+            <FILE id="xJYGdX" name="cmp_legend.h" compile="0" resource="0" file="../Source/cmp/include/include_internal/cmp_legend.h"/>
+            <FILE id="fY8ziO" name="cmp_trace.h" compile="0" resource="0" file="./Source/cmp/include/include_internal/cmp_trace.h"/>
+            <FILE id="sJa8e6" name="cmp_utils.h" compile="0" resource="0" file="./Source/cmp/include/include_internal/cmp_utils.h"/>
+          </GROUP>
+          <GROUP id="{4891C61E-B252-A267-0294-DED4505CCBA3}" name="include">
+            <FILE id="EuXySs" name="cmp_datamodels.h" compile="0" resource="0"
+                  file="./Source/cmp/include/include/cmp_datamodels.h"/>
+            <FILE id="AbVeAR" name="cmp_lookandfeel.h" compile="0" resource="0"
+                  file="./Source/cmp/include/include/cmp_lookandfeel.h"/>
+            <FILE id="x9tJj8" name="cmp_plot.h" compile="0" resource="0" file="./Source/cmp/include/include/cmp_plot.h"/>
+            <FILE id="Prngqr" name="cmp_version.h.in" compile="0" resource="1"
+                  file="./Source/cmp/include/include/cmp_version.h.in"/>
+          </GROUP>
+        </GROUP>
         <GROUP id="{B05A4952-6299-2AA2-DB8B-0933A0CB4AA6}" name="source">
           <FILE id="h2pV6I" name="cmp_downsampler.cpp" compile="1" resource="0"
-                file="../CustomMatPlot/source/cmp_downsampler.cpp"/>
-          <FILE id="mICS4n" name="cmp_frame.cpp" compile="1" resource="0" file="../CustomMatPlot/source/cmp_frame.cpp"/>
+                file="./Source/cmp/source/cmp_downsampler.cpp"/>
+          <FILE id="mICS4n" name="cmp_frame.cpp" compile="1" resource="0" file="./Source/cmp/source/cmp_frame.cpp"/>
           <FILE id="JNC9zg" name="cmp_graph_area.cpp" compile="1" resource="0"
-                file="../CustomMatPlot/source/cmp_graph_area.cpp"/>
+                file="./Source/cmp/source/cmp_graph_area.cpp"/>
           <FILE id="XuRjyk" name="cmp_graph_line.cpp" compile="1" resource="0"
-                file="../CustomMatPlot/source/cmp_graph_line.cpp"/>
-          <FILE id="kwnpNo" name="cmp_grid.cpp" compile="1" resource="0" file="../CustomMatPlot/source/cmp_grid.cpp"/>
-          <FILE id="iFNoCV" name="cmp_label.cpp" compile="1" resource="0" file="../CustomMatPlot/source/cmp_label.cpp"/>
-          <FILE id="sy1TR0" name="cmp_legend.cpp" compile="1" resource="0" file="../CustomMatPlot/source/cmp_legend.cpp"/>
+                file="./Source/cmp/source/cmp_graph_line.cpp"/>
+          <FILE id="kwnpNo" name="cmp_grid.cpp" compile="1" resource="0" file="./Source/cmp/source/cmp_grid.cpp"/>
+          <FILE id="iFNoCV" name="cmp_label.cpp" compile="1" resource="0" file="./Source/cmp/source/cmp_label.cpp"/>
+          <FILE id="sy1TR0" name="cmp_legend.cpp" compile="1" resource="0" file="./Source/cmp/source/cmp_legend.cpp"/>
           <FILE id="uDnwxG" name="cmp_lookandfeel.cpp" compile="1" resource="0"
-                file="../CustomMatPlot/source/cmp_lookandfeel.cpp"/>
-          <FILE id="szUBPv" name="cmp_plot.cpp" compile="1" resource="0" file="../CustomMatPlot/source/cmp_plot.cpp"/>
-          <FILE id="mKafnY" name="cmp_trace.cpp" compile="1" resource="0" file="../CustomMatPlot/source/cmp_trace.cpp"/>
-          <FILE id="dgILnw" name="package.h" compile="0" resource="0" file="../CustomMatPlot/source/package.h"/>
-        </GROUP>
-        <GROUP id="{4891C61E-B252-A267-0294-DED4505CCBA3}" name="include">
-          <FILE id="EuXySs" name="cmp_datamodels.h" compile="0" resource="0"
-                file="../CustomMatPlot/include/include/cmp_datamodels.h"/>
-          <FILE id="AbVeAR" name="cmp_lookandfeel.h" compile="0" resource="0"
-                file="../CustomMatPlot/include/include/cmp_lookandfeel.h"/>
-          <FILE id="x9tJj8" name="cmp_plot.h" compile="0" resource="0" file="../CustomMatPlot/include/include/cmp_plot.h"/>
-          <FILE id="Prngqr" name="cmp_version.h.in" compile="0" resource="1"
-                file="../CustomMatPlot/include/include/cmp_version.h.in"/>
-        </GROUP>
-        <GROUP id="{2CB04617-34CF-075B-2FBA-FAB3C462F244}" name="include_internal">
-          <FILE id="oQcaLe" name="cmp_downsampler.h" compile="0" resource="0"
-                file="../CustomMatPlot/include/include_internal/cmp_downsampler.h"/>
-          <FILE id="mGEqCs" name="cmp_frame.h" compile="0" resource="0" file="../CustomMatPlot/include/include_internal/cmp_frame.h"/>
-          <FILE id="XY8Nzz" name="cmp_graph_area.h" compile="0" resource="0"
-                file="../CustomMatPlot/include/include_internal/cmp_graph_area.h"/>
-          <FILE id="OniWzA" name="cmp_graph_line.h" compile="0" resource="0"
-                file="../CustomMatPlot/include/include_internal/cmp_graph_line.h"/>
-          <FILE id="e46xgV" name="cmp_grid.h" compile="0" resource="0" file="../CustomMatPlot/include/include_internal/cmp_grid.h"/>
-          <FILE id="z94bU0" name="cmp_label.h" compile="0" resource="0" file="../CustomMatPlot/include/include_internal/cmp_label.h"/>
-          <FILE id="xJYGdX" name="cmp_legend.h" compile="0" resource="0" file="../CustomMatPlot/include/include_internal/cmp_legend.h"/>
-          <FILE id="fY8ziO" name="cmp_trace.h" compile="0" resource="0" file="../CustomMatPlot/include/include_internal/cmp_trace.h"/>
-          <FILE id="sJa8e6" name="cmp_utils.h" compile="0" resource="0" file="../CustomMatPlot/include/include_internal/cmp_utils.h"/>
+                file="./Source/cmp/source/cmp_lookandfeel.cpp"/>
+          <FILE id="szUBPv" name="cmp_plot.cpp" compile="1" resource="0" file="./Source/cmp/source/cmp_plot.cpp"/>
+          <FILE id="mKafnY" name="cmp_trace.cpp" compile="1" resource="0" file="./Source/cmp/source/cmp_trace.cpp"/>
+          <FILE id="dgILnw" name="package.h" compile="0" resource="0" file="./Source/cmp/source/package.h"/>
         </GROUP>
         <GROUP id="{36F247B4-3376-E810-7D84-5DA0F3DE4396}" name="extras">
           <GROUP id="{0383D774-B9A9-1DE4-D6F7-7D445521CBD9}" name="include">
-            <FILE id="nvUqGn" name="cmp_extras.hpp" compile="0" resource="0" file="../CustomMatPlot/extras/include/cmp_extras.hpp"/>
+            <FILE id="nvUqGn" name="cmp_extras.hpp" compile="0" resource="0" file="./Source/cmp/extras/include/cmp_extras.hpp"/>
           </GROUP>
           <GROUP id="{5E263CC7-D4D0-07A6-699B-989E01C3F961}" name="source">
-            <FILE id="qjjblT" name="cmp_extras.cpp" compile="1" resource="0" file="../CustomMatPlot/extras/source/cmp_extras.cpp"/>
+            <FILE id="qjjblT" name="cmp_extras.cpp" compile="1" resource="0" file="./Source/cmp/extras/source/cmp_extras.cpp"/>
           </GROUP>
         </GROUP>
       </GROUP>
