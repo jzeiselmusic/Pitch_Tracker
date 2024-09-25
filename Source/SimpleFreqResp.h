@@ -28,17 +28,7 @@ using namespace juce;
 class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
  public:
   SimpleFreqRespDemo()
-      : audioSetupComp(deviceManager,
-                       0,             // minimum input channels
-                       num_channels,  // maximum input channels
-                       0,             // minimum output channels
-                       2,             // maximum output channels
-                       false,         // ability to select midi inputs
-                       false,         // ability to select midi output device
-                       false,         // treat channels as stereo pairs
-                       false)         // hide advanced options
-        ,
-        forwardFFT(fftOrder),
+      : forwardFFT(fftOrder),
         window(fftSize, juce::dsp::WindowingFunction<float>::hann) {
     RuntimePermissions::request(
         RuntimePermissions::recordAudio, [this](bool granted) {
@@ -46,7 +36,7 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
           setAudioChannels(numInputChannels, num_channels);
         });
 
-    addAndMakeVisible(audioSetupComp);
+    // addAndMakeVisible(audioSetupComp);
     addAndMakeVisible(m_plot);
     addAndMakeVisible(m_tracepoint_cb_label);
 
@@ -96,11 +86,7 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
     void resized() override {
     auto rect = getLocalBounds();
 
-    m_plot.setBounds(rect.removeFromLeft(proportionOfWidth(0.7f))
-                         .removeFromTop(proportionOfHeight(0.85f)));
-
-    audioSetupComp.setBounds(rect.removeFromRight(proportionOfWidth(0.3f))
-                                 .removeFromTop(proportionOfHeight(0.85f)));
+    m_plot.setBounds(rect.removeFromTop(proportionOfHeight(0.99f)));
 
     rect = getLocalBounds();
     m_tracepoint_cb_label.setBounds(
@@ -131,9 +117,6 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
         g.setColour(juce::Colours::grey);
 
         g.drawRoundedRectangle(m_plot.getBounds().toFloat(), 5.0f, 5.0f);
-        g.drawRoundedRectangle(m_tracepoint_cb_label.getBounds().toFloat(), 5.0f,
-                           5.0f);
-        g.drawRoundedRectangle(audioSetupComp.getBounds().toFloat(), 5.0f, 5.0f);
     }
 
     void timerCallback() override {
@@ -198,8 +181,6 @@ class SimpleFreqRespDemo : public AudioAppComponent, private Timer {
     
  private:
     static constexpr int num_channels{1};
-
-    juce::AudioDeviceSelectorComponent audioSetupComp;
 
     juce::dsp::WindowingFunction<float> window;
 
